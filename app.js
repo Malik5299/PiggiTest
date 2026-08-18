@@ -758,38 +758,20 @@ function addChatMessage(role, text) {
         const wrapper = document.createElement('div');
         wrapper.className = 'chat-msg-ai-wrapper';
 
+        const tag = document.createElement('div');
+        tag.className = 'chat-ai-tag';
+        tag.textContent = 'PiggiAI';
+
         const div = document.createElement('div');
         div.className = 'chat-msg-ai';
         div.textContent = text;
 
+        wrapper.appendChild(tag);
         wrapper.appendChild(div);
         aiChatHistory.appendChild(wrapper);
     }
 
     aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
-}
-
-function showThinkingIndicator() {
-    if (!aiChatHistory) return null;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'chat-msg-ai-wrapper';
-    wrapper.id = 'thinking-indicator';
-
-    const div = document.createElement('div');
-    div.className = 'chat-msg-ai ai-thinking-msg';
-    div.innerHTML = `PiggiAI is thinking <span class="thinking-dots"><span></span><span></span><span></span></span>`;
-
-    wrapper.appendChild(div);
-    aiChatHistory.appendChild(wrapper);
-    aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
-    return wrapper;
-}
-
-function removeThinkingIndicator() {
-    const indicator = document.getElementById('thinking-indicator');
-    if (indicator) {
-        indicator.remove();
-    }
 }
 
 function executeAction(act) {
@@ -922,9 +904,7 @@ if (sendBtn) {
             return;
         }
 
-        showThinkingIndicator();
-
-        const currentBalanceStr = mainBalanceValue?.textContent || '0,00 €';
+        const currentBalanceStr = mainBalanceValue?.textContent || '0.00 €';
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${activeKey}`;
 
         const requestData = {
@@ -983,8 +963,6 @@ User input: "${userPrompt}"`
                 body: JSON.stringify(requestData)
             });
 
-            removeThinkingIndicator();
-
             if (response.status === 429) {
                 addChatMessage('PiggiAI', 'Rate limit reached. Please wait a moment before asking again.');
                 return;
@@ -1012,7 +990,6 @@ User input: "${userPrompt}"`
             }
 
         } catch (error) {
-            removeThinkingIndicator();
             console.error("An error occurred in the application logic:", error);
             addChatMessage('PiggiAI', 'An error occurred while processing the response.');
         }
