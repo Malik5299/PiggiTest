@@ -147,7 +147,7 @@ const errorExpenseAmount = document.getElementById('error-expense-amount');
 if (inputExpenseAmount) inputExpenseAmount.addEventListener('input', () => validateNumberInput(inputExpenseAmount, errorExpenseAmount));
 
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(amount);
 }
 
 function updateBalanceUI() {
@@ -905,7 +905,7 @@ if (sendBtn) {
         }
 
         const currentBalanceStr = mainBalanceValue?.textContent || '0.00 €';
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${activeKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${activeKey}`;
 
         const requestData = {
             contents: [{
